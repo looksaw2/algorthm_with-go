@@ -326,3 +326,134 @@ func MinSubArrayLen(target int, nums []int) int {
 	}
 	return ans
 }
+
+// 生成螺旋矩阵
+func GenerateMatrix(n int) [][]int {
+	//预先分配空间
+	result := make([][]int, n)
+	for i := 0; i < n; i++ {
+		result[i] = make([]int, n)
+	}
+	//确定旋转的方向
+	type pair struct {
+		x int
+		y int
+	}
+	dirs := []pair{{0, 1}, {1, 0}, {0, -1}, {-1, 0}}
+	row, col, dirIdx := 0, 0, 0
+	for i := 1; i <= n*n; i++ {
+		result[row][col] = i
+		dir := dirs[dirIdx]
+		if r, c := row+dir.x, col+dir.y; r < 0 || r >= n || c < 0 || c >= n || result[r][c] > 0 {
+			dirIdx = (dirIdx + 1) % 4
+			dir = dirs[dirIdx]
+		}
+		row += dir.x
+		col += dir.y
+	}
+	return result
+}
+
+// 生成螺旋矩阵版本2
+func GenerateMatrix2(n int) [][]int {
+	//特殊边界情况处理
+	if n <= 0 {
+		return [][]int{}
+	}
+	//开始分配空间
+	result := make([][]int, n)
+	for i := 0; i < n; i++ {
+		result[i] = make([]int, n)
+	}
+	//开始
+	top, bottom := 0, n-1
+	left, right := 0, n-1
+	num := 1
+	for top <= bottom && left <= right {
+		//从左到右
+		for i := left; i <= right; i++ {
+			result[top][i] = num
+			num++
+		}
+		top++
+		if top > bottom {
+			break
+		}
+		//从上到下
+		for i := top; i <= bottom; i++ {
+			result[i][right] = num
+			num++
+		}
+		right--
+		if left > right {
+			break
+		}
+		//从右到左
+		for i := right; i >= left; i-- {
+			result[bottom][i] = num
+			num++
+		}
+		bottom--
+		if top > bottom {
+			break
+		}
+		//从下到上
+		for i := bottom; i >= top; i-- {
+			result[i][left] = num
+			num++
+		}
+		left++
+		if left > right {
+			break
+		}
+	}
+	return result
+}
+
+// 螺旋矩阵拉直
+func spiralOrder(matrix [][]int) []int {
+	//特殊情况
+	if len(matrix) == 0 || len(matrix[0]) == 0 {
+		return []int{}
+	}
+	result := make([]int, 0, len(matrix)*len(matrix[0]))
+	//开始收缩边界
+	top, bottom := 0, len(matrix)-1
+	left, right := 0, len(matrix[0])-1
+	//判断条件
+	for top <= bottom && left <= right {
+		//从左到右边
+		for i := left; i <= right; i++ {
+			result = append(result, matrix[top][i])
+		}
+		top++
+		if top > bottom {
+			break
+		}
+		//从上到下
+		for i := top; i <= bottom; i++ {
+			result = append(result, matrix[i][right])
+		}
+		right--
+		if left > right {
+			break
+		}
+		//从右到左
+		for i := right; i >= left; i-- {
+			result = append(result, matrix[bottom][i])
+		}
+		bottom--
+		if top > bottom {
+			break
+		}
+		//从下到上
+		for i := bottom; i >= top; i-- {
+			result = append(result, matrix[i][left])
+		}
+		left++
+		if left > right {
+			break
+		}
+	}
+	return result
+}
