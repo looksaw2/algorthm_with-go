@@ -75,3 +75,42 @@ func TestRemoveDuplicates(t *testing.T) {
 		t.Errorf("input[4] expected is 4 , actual is %d ", input[4])
 	}
 }
+
+func test_arr_equal(a []int, b []int) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i := 0; i < len(a); i++ {
+		if a[i] != b[i] {
+			return false
+		}
+	}
+	return true
+}
+
+// 测试平方函数
+func TestSortedSquares1(t *testing.T) {
+	input := []int{-4, -1, 0, 3, 10}
+	expected := []int{0, 1, 9, 16, 100}
+	actual := codewiththingking.SortedSquares(input)
+	if len(expected) != len(actual) {
+		t.Errorf("expected len is not equal actual")
+		return
+	}
+	ok := test_arr_equal(expected, actual)
+	if !ok {
+		t.Errorf("expected elem is not equal actual elem")
+		return
+	}
+}
+
+// 测试MinSubArrayLen函数
+func TestMinSubArratLen(t *testing.T) {
+	input := []int{1, 2, 3, 4, 5}
+	target := 11
+	expected := 3
+	actual := codewiththingking.MinSubArrayLen(target, input)
+	if expected != actual {
+		t.Errorf("expected is %d ,actual is %d", expected, actual)
+	}
+}
